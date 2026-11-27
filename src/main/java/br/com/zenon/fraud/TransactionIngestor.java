@@ -5,11 +5,12 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class TransactionIngestor {
+
+    public static final int MAX_SIZE = 50_000;
 
     public List<Transaction> read(String fileName) {
         Path path = Path.of(fileName);
@@ -19,7 +20,7 @@ public class TransactionIngestor {
 
             return lines.stream()
                     .skip(1)
-                    .limit(1000)
+                    .limit(MAX_SIZE)
                     .map(this::parseTransaction)
                     .filter(Optional::isPresent)
                     .map(Optional::get)
