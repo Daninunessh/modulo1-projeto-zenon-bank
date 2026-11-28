@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class TransactionIngestor {
 
-    public static final int MAX_SIZE = 50_000;
+    public static final int MAX_SIZE = 100_000;
 
     public List<Transaction> read(String fileName) {
         Path path = Path.of(fileName);

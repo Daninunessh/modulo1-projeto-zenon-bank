@@ -46,5 +46,45 @@ public class Main {
         IO.println("--------------------------------------------------");
         IO.println("5. Fraudes por Tipo:");
         transactionsFraud.forEach((type, count) -> IO.println("- " + type + ": " + count));
+
+        TransactionRepository transactionRepository;
+        transactionRepository = new TransactionListRepository(transactions);
+
+        String notFoundOriginName = "C12345";
+        IO.println("--------------------------------------------------");
+        transactionRepository.findByOriginName(notFoundOriginName).ifPresentOrElse(
+                IO::println,
+                () -> IO.println("Transação não encontrada para o cliente: " + notFoundOriginName)
+        );
+
+        String existentOriginName = "C1868032458";
+        IO.println("--------------------------------------------------");
+        transactionRepository.findByOriginName(existentOriginName).ifPresentOrElse(
+                IO::println,
+                () -> IO.println("Transação não encontrada para o cliente: " + existentOriginName)
+        );
+        IO.println("--------------------------------------------------");
+
+        long startTime = System.nanoTime();
+        transactionRepository.findByOriginName(existentOriginName)
+                .ifPresentOrElse(
+                        IO::println,
+                        () -> IO.println("Transação não encontrada para o cliente: " + existentOriginName)
+                );
+        long endTime = System.nanoTime();
+        IO.println("Tempo de busca - List (ms): " + (endTime - startTime) / 1_000_000.0);
+        IO.println("--------------------------------------------------");
+
+        transactionRepository = new TransactionMapRepository(transactions);
+        startTime = System.nanoTime();
+        transactionRepository.findByOriginName(existentOriginName)
+                .ifPresentOrElse(
+                        IO::println,
+                        () -> IO.println("Transação não encontrada para o cliente: " + existentOriginName)
+                );
+        endTime = System.nanoTime();
+        IO.println("Tempo de busca - Map (ms): " + (endTime - startTime) / 1_000_000.0);
+        IO.println("--------------------------------------------------");
+
     }
 }
